@@ -22,8 +22,8 @@ const mockProducts = {
     tags: ['专业定制', '优质原料', '快速配送'],
     images: [
       '/static/images/medicine-1.jpg',
-      '/static/images/medicine-2.jpg',
-      '/static/images/medicine-3.jpg',
+      '/static/images/medicine-2.avif',
+      '/static/images/medicine-3.webp',
     ],
     description: `
       <div class="space-y-4">
@@ -47,8 +47,8 @@ const mockProducts = {
     originalPrice: 198,
     tags: ['专业定制', '优质原料', '快速配送', '限时特惠'],
     images: [
-      '/static/images/medicine-2.jpg',
-      '/static/images/medicine-3.jpg',
+      '/static/images/medicine-2.avif',
+      '/static/images/medicine-3.webp',
       '/static/images/medicine-1.jpg',
     ],
     description: `
@@ -91,7 +91,7 @@ wss.on('connection', (ws) => {
         // 获取回复内容
         const response =
           predefinedResponses[content] ||
-          '您好，我是茶茶AI助手。您的问题是关于健康方面的吗？我可以为您提供专业的健康咨询和建议。'
+          '您好，我是小美AI助手。您的问题是关于健康方面的吗？我可以为您提供专业的健康咨询和建议。'
 
         // 模拟打字效果发送回复
         let currentIndex = 0
@@ -136,7 +136,7 @@ wss.on('connection', (ws) => {
 })
 
 // 欢迎信息接口
-app.get('/welcome', (req, res) => {
+app.get('/api/welcome', (req, res) => {
   res.json({
     code: 0,
     data: {
@@ -153,7 +153,7 @@ app.get('/welcome', (req, res) => {
 })
 
 // 设备列表接口
-app.get('/devices', (req, res) => {
+app.get('/api/devices', (req, res) => {
   res.json({
     code: 0,
     data: [
@@ -199,7 +199,7 @@ app.get('/devices', (req, res) => {
 })
 
 // 健康状态接口
-app.get('/health-status', (req, res) => {
+app.get('/api/health-status', (req, res) => {
   res.json({
     code: 0,
     data: {
@@ -214,24 +214,33 @@ app.get('/health-status', (req, res) => {
 })
 
 // 登录接口
-app.post('/login', (req, res) => {
+app.post('/api/auth/login', (req, res) => {
   // 可以从请求体获取用户名密码
   // const { username, password } = req.body
   res.json({
-    code: 0,
-    data: {
-      token: 'mock-token-' + Date.now(),
-      user: {
-        id: '10001',
-        name: '张阿姨',
-        avatar: '/static/images/avatar-default.png',
-      },
+    "code": 200,
+    "message": "string",
+    "data": {
+      token: "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzMGJiYzAzNS05NmMwLTQ1ZTUtOTI1Mi1kZDMwOTBlZWY3NTQiLCJzdWIiOiI3MzYwNjMxMTQ2OTY1OTM0MDgiLCJpc3MiOiJjb21wYW55LWF1dGgtc2VydmVyIiwiaWF0IjoxNzUzMzQ0MDA0LCJleHAiOjE3NTM0MzA0MDR9.YmCyybgZ19OwRNdHrZTm0X77NWVD84Qu8qpwG19R5cg",
+      userId: 736063114696593400
     },
-    msg: 'ok',
+    "timestamp": 0,
+    "error": true,
+    "success": true
+  })
+})
+app.post('/api/auth/logout', (req, res) => {
+  res.json({
+    "code": 200,
+    "message": "操作成功",
+    "data": "登出成功",
+    "timestamp": 1753341585955,
+    "error": false,
+    "success": true
   })
 })
 // 获取推荐商品列表
-app.get('/products/recommendations', (req, res) => {
+app.get('/api/products/recommendations', (req, res) => {
   res.json({
     code: 200,
     message: 'success',
@@ -245,7 +254,7 @@ app.get('/products/recommendations', (req, res) => {
   })
 })
 // 获取商品详情
-app.get('/products/:id', (req, res) => {
+app.get('/api/products/:id', (req, res) => {
   const { id } = req.params
   const product = mockProducts[id]
 
@@ -265,7 +274,7 @@ app.get('/products/:id', (req, res) => {
 })
 
 // 获取新闻列表
-app.get('/news', (req, res) => {
+app.get('/api/news', (req, res) => {
   res.json({
     code: 200,
     data: [
@@ -289,7 +298,7 @@ app.get('/news', (req, res) => {
 })
 
 // 西医健康报告接口
-app.post('/health-reports/western', (req, res) => {
+app.post('/api/health-reports/western', (req, res) => {
   res.json({
     code: 200,
     message: 'success',
@@ -406,7 +415,7 @@ app.post('/health-reports/western', (req, res) => {
 })
 
 // 中医健康报告接口
-app.post('/health-reports/tcm', (req, res) => {
+app.post('/api/health-reports/tcm', (req, res) => {
   res.json({
     message: '数据接收成功',
     code: 200,
